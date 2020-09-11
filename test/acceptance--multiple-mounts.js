@@ -18,13 +18,13 @@ const request = supertest.agent(app.listen())
 describe('Acceptance: Multiple Mounts', () => {
   it('should serve /examples', () => (
     request
-    .get('/examples/cascade.js')
-    .expect(200)
+      .get('/examples/cascade.js')
+      .expect(200)
   ))
 
   it('should serve /test', () => (
     request
-    .get('/test/errors.js')
-    .expect(200)
+      .get('/test/errors.js')
+      .expect(200)
   ))
 })

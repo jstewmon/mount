@@ -26,22 +26,22 @@ describe('mount(app)', function () {
     app.use(mount(b))
 
     request(app.listen())
-    .get('/')
-    .expect(404)
-    .end(function (err) {
-      if (err) return done(err)
-
-      request(app.listen())
-      .get('/hello')
-      .expect('Hello')
+      .get('/')
+      .expect(404)
       .end(function (err) {
         if (err) return done(err)
 
         request(app.listen())
-        .get('/world')
-        .expect('World', done)
+          .get('/hello')
+          .expect('Hello')
+          .end(function (err) {
+            if (err) return done(err)
+
+            request(app.listen())
+              .get('/world')
+              .expect('World', done)
+          })
       })
-    })
   })
 })
 
@@ -65,22 +65,22 @@ describe('mount(path, app)', function () {
     app.use(mount('/world', b))
 
     request(app.listen())
-    .get('/hello')
-    .expect('Hello')
-    .end(function (err) {
-      if (err) return done(err)
-
-      request(app.listen())
-      .get('/world')
-      .expect('World')
+      .get('/hello')
+      .expect('Hello')
       .end(function (err) {
         if (err) return done(err)
 
         request(app.listen())
-        .get('/')
-        .expect(404, done)
+          .get('/world')
+          .expect('World')
+          .end(function (err) {
+            if (err) return done(err)
+
+            request(app.listen())
+              .get('/')
+              .expect(404, done)
+          })
       })
-    })
   })
 
   it('should cascade properly', function (done) {
@@ -109,29 +109,29 @@ describe('mount(path, app)', function () {
     b.use(mount('/baz', c))
 
     request(app.listen())
-    .get('/')
-    .expect(404)
-    .end(function (err) {
-      if (err) return done(err)
-
-      request(app.listen())
-      .get('/foo')
-      .expect('foo')
+      .get('/')
+      .expect(404)
       .end(function (err) {
         if (err) return done(err)
 
         request(app.listen())
-        .get('/foo/bar')
-        .expect('bar')
-        .end(function (err) {
-          if (err) return done(err)
+          .get('/foo')
+          .expect('foo')
+          .end(function (err) {
+            if (err) return done(err)
 
-          request(app.listen())
-          .get('/foo/bar/baz')
-          .expect('baz', done)
-        })
+            request(app.listen())
+              .get('/foo/bar')
+              .expect('bar')
+              .end(function (err) {
+                if (err) return done(err)
+
+                request(app.listen())
+                  .get('/foo/bar/baz')
+                  .expect('baz', done)
+              })
+          })
       })
-    })
   })
 
   it('should restore prefix for mounted apps', function (done) {
@@ -160,8 +160,8 @@ describe('mount(path, app)', function () {
     app.use(mount('/foo/bar/baz', c))
 
     request(app.listen())
-    .get('/foo/bar')
-    .expect('bar', done)
+      .get('/foo/bar')
+      .expect('bar', done)
   })
 
   it('should restore prefix for mounted middleware', function (done) {
@@ -183,8 +183,8 @@ describe('mount(path, app)', function () {
     }))
 
     request(app.listen())
-    .get('/foo/bar')
-    .expect('bar', done)
+      .get('/foo/bar')
+      .expect('bar', done)
   })
 
   it('should have the correct path', function (done) {
@@ -206,8 +206,8 @@ describe('mount(path, app)', function () {
     app.use(mount('/foo', a))
 
     request(app.listen())
-    .get('/foo')
-    .end(done)
+      .get('/foo')
+      .end(done)
   })
 
   describe('when errors occur', function () {
@@ -232,8 +232,8 @@ describe('mount(path, app)', function () {
       app.use(mount('/foo', a))
 
       request(app.listen())
-      .get('/foo')
-      .end(done)
+        .get('/foo')
+        .end(done)
     })
   })
 
@@ -255,15 +255,15 @@ describe('mount(path, app)', function () {
       app.use(mount('/world', world))
 
       request(app.listen())
-      .get('/hello')
-      .expect('Hello')
-      .end(function (err) {
-        if (err) return done(err)
+        .get('/hello')
+        .expect('Hello')
+        .end(function (err) {
+          if (err) return done(err)
 
-        request(app.listen())
-        .get('/world')
-        .expect('World', done)
-      })
+          request(app.listen())
+            .get('/world')
+            .expect('World', done)
+        })
     })
   })
 })
@@ -279,32 +279,32 @@ describe('mount(/prefix)', function () {
 
   it('should not match /kljasdf', function (done) {
     request(server)
-    .get('/kljasdf')
-    .expect(404, done)
+      .get('/kljasdf')
+      .expect(404, done)
   })
 
   it('should not match /prefixlaksjdf', function (done) {
     request(server)
-    .get('/prefixlaksjdf')
-    .expect(404, done)
+      .get('/prefixlaksjdf')
+      .expect(404, done)
   })
 
   it('should match /prefix', function (done) {
     request(server)
-    .get('/prefix')
-    .expect(204, done)
+      .get('/prefix')
+      .expect(204, done)
   })
 
   it('should match /prefix/', function (done) {
     request(server)
-    .get('/prefix/')
-    .expect(204, done)
+      .get('/prefix/')
+      .expect(204, done)
   })
 
   it('should match /prefix/lkjasdf', function (done) {
     request(server)
-    .get('/prefix/lkjasdf')
-    .expect(204, done)
+      .get('/prefix/lkjasdf')
+      .expect(204, done)
   })
 })
 
@@ -319,32 +319,32 @@ describe('mount(/prefix/)', function () {
 
   it('should not match /kljasdf', function (done) {
     request(server)
-    .get('/kljasdf')
-    .expect(404, done)
+      .get('/kljasdf')
+      .expect(404, done)
   })
 
   it('should not match /prefixlaksjdf', function (done) {
     request(server)
-    .get('/prefixlaksjdf')
-    .expect(404, done)
+      .get('/prefixlaksjdf')
+      .expect(404, done)
   })
 
   it('should not match /prefix', function (done) {
     request(server)
-    .get('/prefix')
-    .expect(404, done)
+      .get('/prefix')
+      .expect(404, done)
   })
 
   it('should match /prefix/', function (done) {
     request(server)
-    .get('/prefix/')
-    .expect(204, done)
+      .get('/prefix/')
+      .expect(204, done)
   })
 
   it('should match /prefix/lkjasdf', function (done) {
     request(server)
-    .get('/prefix/lkjasdf')
-    .expect(204, done)
+      .get('/prefix/lkjasdf')
+      .expect(204, done)
   })
 })
 
@@ -370,29 +370,29 @@ describe('mount(/prefix) multiple', () => {
 
   it('should serve all the right mounted paths', async () => {
     await request(server)
-    .get('/a/a')
-    .expect(204)
+      .get('/a/a')
+      .expect(204)
 
     await request(server)
-    .get('/b/b')
-    .expect(204)
+      .get('/b/b')
+      .expect(204)
 
     await request(server)
-    .get('/c/c')
-    .expect(204)
+      .get('/c/c')
+      .expect(204)
   })
 
   it('should 404 on all the wrong paths', async () => {
     await request(server)
-    .get('/a/b')
-    .expect(404)
+      .get('/a/b')
+      .expect(404)
 
     await request(server)
-    .get('/b/c')
-    .expect(404)
+      .get('/b/c')
+      .expect(404)
 
     await request(server)
-    .get('/c/a')
-    .expect(404)
+      .get('/c/a')
+      .expect(404)
   })
 })
